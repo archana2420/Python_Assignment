@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Login</title>
+</head>
+<body>
+
+<style>
+    .container{
+
+    padding:2%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    }
+    .card{
+    font-size:1em;
+    width:500px;
+    padding:2%;
+
+    }
+</style>
+<div class="container">
+    <div class="card">
+
+        <h3><center>Login</center></h3>
+
+        <form method="post" action="{%   url 'login'   %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div class="m-2">
+                <label >Username</label>
+                <input type="text" name="username" placeholder="Enter Username">
+                </div>
+                <div class="m-2">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter Password">
+                </div>
+                <button type="submit"  class="btn btn-dark p-1 m-1 float-right  ">Login</button>
+                </div>
+        </form>
+<a href="{%  url 'register'   %}"><center>Don't have an account?</center> </a>
+    </div>
+</div>
+
+</body>
+</html>
