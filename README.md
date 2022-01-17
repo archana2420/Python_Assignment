@@ -9,4 +9,4 @@ pytz==2021.3
 sqlparse==0.4.2
 typing_extensions==4.0.1
 
-Any issues while running code download pymongo 3.12.1
+Any issues while running code install pymongo 3.12.1
