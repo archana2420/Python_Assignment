@@ -25,6 +25,9 @@
     padding:2%;
 
     }
+    ul{
+	list-style: none;
+    }
 </style>
 <div class="container">
     <div class="card">
@@ -35,15 +38,22 @@
             {% csrf_token %}
 
             <div class="form-group">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li style="text-align:center;" class="alert alert-danger">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 <div class="m-2">
-                <label >Username</label>
-                <input type="text" name="username" placeholder="Enter Username">
+                <label >Username: </label>
+                <input type="text" name="username" placeholder="Enter Email">
                 </div>
                 <div class="m-2">
-                <label>Password</label>
+                <label>Password:&nbsp</label>
                 <input type="password" name="password" placeholder="Enter Password">
                 </div>
-                <button type="submit"  class="btn btn-dark p-1 m-1 float-right  ">Login</button>
+                <center><button type="submit"  class="btn btn-dark p-1 m-1   ">Login</button></center>
                 </div>
         </form>
 <a href="{%  url 'register'   %}"><center>Don't have an account?</center> </a>

@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect
 from .models import UserInfo
 from .serializers import UserInfoSerializer
-from .forms import LoginForm,RegistrationForm
+from .forms import RegistrationForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 
@@ -17,46 +18,51 @@ def RegisterationPage(request):
     if request.method=="POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            username=form.cleaned_data['email']
-            password=form.cleaned_data['password']
-            user = User.objects.create_user(username=username,password=password)
-            user.save()
-            serializer=UserInfoSerializer(data=request.POST)
+            serializer=UserInfoSerializer(data=request.POST) # serializes the data
             if serializer.is_valid():
-                serializer.save()
-                return redirect('dashboard')
-            else:
-                print("serializer error",serializer.errors)
-        else:
-            print(form.errors)
+                username = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                user=User.objects.filter(username=username)
+                if user.exists(): # Checks if the user already exists
+                    messages.error(request, 'User already exists!')
+                else:
+                    user = User.objects.create_user(username=username, password=password) # Creates a user using the credientials
+                    user.save()
+                    serializer.save()
+                    return redirect('dashboard')
 
-    context={'form':form}
-    return render(request,'Dashboard/Registration.html',context)
+            else:
+                for i in serializer.errors:
+                    if i=='dob':
+                        messages.error(request, 'Registration Unsuccessful(Date format:YYYY-MM-DD)')
+                    elif i=='name':
+                        messages.error(request, 'Registration Unsuccessful!Enter valid name')
+                    elif i=='phone_number':
+                        messages.error(request, 'Registration Unsuccessful!Enter valid phone number')
+                    else:
+                        messages.error(request,'Registration Unsuccessful!Enter 8 digit password with alpabets and digits only')
+
+
+        else:
+            messages.error(request, 'Registration Unsuccessful')
+    context = {'form': form}
+    return render(request, 'Dashboard/Registration.html', context)
+
+
 
 def LoginPage(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: # To check if the user is already logged in
         return redirect('dashboard')
-
-    # if request.method=="POST":
-    #     email=request.POST['email']
-    #     password=request.POST['password']
-    #     print(email,password)
-    #     user=UserInfo.objects.filter(email=email)
-    #     if user is not None:
-    #         user=UserInfo.objects.get(email=email)
-    #         print(user)
-    #         if user.password==password:
-    #             return redirect('dashboard',email=user.email)
-    #     else:
-    #         print('User Not Found')
     if request.method=="POST":
         username=request.POST.get('username')
         password=request.POST.get('password')
-        user=User.objects.get(username=username)
-        user=authenticate(request,username=username,password=password)
+        user=User.objects.filter(username=username)
+        user=authenticate(request,username=username,password=password) # Verifies the user using password
         if user is not None:
-            login(request,user)
-            return redirect('dashboard')
+                login(request,user)
+                return redirect('dashboard')
+        else:
+                messages.error(request,'Email/Password is incorrect')
 
     return render(request,'Dashboard/login.html')
 
@@ -64,11 +70,9 @@ def LogoutPage(request):
     logout(request)
     return render(request, 'Dashboard/logout.html')
 
-@login_required(login_url='login')
+@login_required(login_url='login') # Restricts the view to only logged in user
 def DashboardPage(request):
-    current_user=request.user
-    print(current_user)
-    user_info=UserInfo.objects.get(email=current_user)
-    print(user_info.dob)
+    current_user=request.user # Finds the current user
+    user_info=UserInfo.objects.get(email=current_user) # Retrieves the current user's information
     context={'name':user_info,'email':user_info.email,'dob':user_info.dob,'phone_number':user_info.phone_number}
     return render(request, 'Dashboard/Dashboard.html',context)

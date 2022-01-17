@@ -4,27 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <title>Dashboard</title>
 </head>
 <body>
-<nav class="navbar   navbar-dark  bg-dark">
 
-      <ul class="navbar-nav ">
-        <li class="nav-item m-1  ">
-          <a class="nav-link" href="{%  url 'logout'  %}" style="color:white;margin-right:1px;">Logout</a>
+<nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
+    <ul class="nav navbar-nav ">
+          <li class="nav-item m-1 text-white  ">
+         Dashboard
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item   ">
+         <a class="nav-link" href="{%  url 'logout'  %}" style="color:white;">Logout</a>
         </li>
       </ul>
 
 </nav>
-    <h1>User Information</h1>
-    <h3>Name: {{name}}</h3>
-    <h3>Email: {{email}}</h3>
-    <h3>Date of birth: {{dob}}</h3>
-    <h3>Phone no: {{phone_number}}</h3>
+
+<style>
+    .container{
+
+    padding:2%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    }
+    .card{
+    font-size:1em;
+    width:400px;
+    height:200px;
+    padding:2%;
+    }
+</style>
+<div class="container">
+    <div class="card">
+    <h2>{{name}}'s Dashboard</h2>
+        <table>
+            <tr>
+                <th>Name:</th>
+                <td>{{name}}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{email}}</td>
+            </tr>
+            <tr>
+                <th>Date of birth:</th>
+                <td>{{dob}}</td>
+            </tr>
+            <tr>
+                <th>Phone no:</th>
+                <td>{{phone_number}}</td>
+            </tr>
+        </table>
 
 
+    </div>
+</div>
 
 
 </body>
