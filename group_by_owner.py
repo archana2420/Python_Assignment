@@ -5,7 +5,7 @@ def group_by_owner(input_dict):
             output_dict[input_dict[i]].append(i)
         else:
             list1=[i]
-            output_dict[input_dict[i]]=list1
+            output_dict[input_dict[i]]=list1 # If owner is not present then it creates a list
 
     return output_dict
 
